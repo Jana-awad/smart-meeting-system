@@ -45,4 +45,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Role::class, 'role_user')->withTimestamps()->withPivot('assigned_at');
     }
+    public function createdRooms()
+    {
+        return $this->hasMany(Room::class, 'created_by');
+}
 }
