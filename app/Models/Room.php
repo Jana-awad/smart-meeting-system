@@ -14,6 +14,14 @@ class Room extends Model
     }
     public function features()
     {
-        return $this->belongsToMany(Feature::class)
+        return $this->belongsToMany(Feature::class);
+    }
+    public function meetings()
+    {
+        return $this->hasMany(Meeting::class);
+    }
+    public function minutesOfMeeting()
+    {
+        return $this->hasMany(MinuteOfMeeting::class);
     }
 }

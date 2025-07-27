@@ -11,7 +11,7 @@ class Feature extends Model
     protected $fillable = ['name', 'description'];
     public function rooms()
     {
-        return $this->belongsToMany(Room::class)
+        return $this->belongsToMany(Room::class);
 
-        };
+        }
         }

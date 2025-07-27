@@ -49,4 +49,30 @@ class User extends Authenticatable
     {
         return $this->hasMany(Room::class, 'created_by');
 }
+    public function organizedMeetings()
+    {
+        return $this->hasMany(Meeting::class, 'organized_by');
+    }
+
+    public function createdMinutes()
+    {
+        return $this->hasMany(MinuteOfMeeting::class, 'created_by');
+    }
+
+    public function assignedMinutes()
+    {
+        return $this->hasMany(MinuteOfMeeting::class, 'assigned_to');
+    }
+    public function attendees()
+    {
+        return $this->belongsToMany(Meeting::class, 'attendees');
+}
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class, 'uploaded_by');
+    }
 }
