@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -41,14 +42,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'role_user')->withTimestamps()->withPivot('assigned_at');
     }
+
     public function createdRooms()
     {
         return $this->hasMany(Room::class, 'created_by');
-}
+    }
+
     public function organizedMeetings()
     {
         return $this->hasMany(Meeting::class, 'organized_by');
@@ -63,16 +67,39 @@ class User extends Authenticatable
     {
         return $this->hasMany(MinuteOfMeeting::class, 'assigned_to');
     }
+
     public function attendees()
     {
         return $this->belongsToMany(Meeting::class, 'attendees');
-}
+    }
+
     public function notifications()
     {
         return $this->hasMany(Notification::class);
     }
+
     public function attachments()
     {
         return $this->hasMany(Attachment::class, 'uploaded_by');
+    }
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
