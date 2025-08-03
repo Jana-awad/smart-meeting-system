@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::latest()->paginate(5);
-      
+        return response(view('users.index', compact('users')));
     }
 
     /**
@@ -25,7 +25,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        return response(view('users.create'));
     }
 
     /**
@@ -43,8 +43,10 @@ class UserController extends Controller
             'password'=> 'required|min:6',
         ]);
         User::create($request->all());
-        return redirect()->route('users.index')
-            ->with('success', 'User created successfully.');
+        return response(
+            redirect()->route('users.index')
+                ->with('success', 'User created successfully.')
+        );
     }
 
     /**
@@ -55,7 +57,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        return response(view('users.show', compact('user')));
     }
 
     /**
@@ -66,7 +68,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('users.edit', compact('user'));
+        return response(view('users.edit', compact('user')));
     }
 
     /**
@@ -85,8 +87,10 @@ class UserController extends Controller
             'password'=> 'required|min:6',
         ]);
         $user->update($request->all());
-        return redirect()->route('users.index')
-        ->with('success', 'User updated successfully.');
+        return response(
+            redirect()->route('users.index')
+                ->with('success', 'User updated successfully.')
+        );
     }
 
     /**
@@ -98,7 +102,9 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('users.index')
-        ->with('success', 'User  successfully.');
+        return response(
+            redirect()->route('users.index')
+                ->with('success', 'User  successfully.')
+        );
     }
 }
