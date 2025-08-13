@@ -52,4 +52,14 @@ class AuthController extends Controller
         JWTAuth::invalidate(JWTAuth::getToken());
         return response()->json(['message' => 'Successfully logged out']);
     }
+    public function index()
+{
+    if (auth()->user()->role !== 'admin') {
+        return response()->json(['error' => 'Forbidden'], 403);
+    }
+
+    $users = User::all();
+    return response()->json($users, 200);
+}
+
 }
