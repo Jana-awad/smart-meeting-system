@@ -20,8 +20,12 @@ use App\Http\Controllers\API\RoleController;
 |--------------------------------------------------------------------------
 */
 
-Route::post('register', [AuthController::class, 'register']);
-Route::post('login', [AuthController::class, 'login']);
+//Route::post('register', [AuthController::class, 'register']);
+//Route::post('login', [AuthController::class, 'login']);
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+
 
 /*
 |--------------------------------------------------------------------------

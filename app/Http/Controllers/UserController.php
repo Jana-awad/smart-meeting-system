@@ -41,12 +41,16 @@ class UserController extends Controller
             'name'=> 'required',
             'email'=> 'required|email|unique:users,email',
             'password'=> 'required|min:6',
+            'roles' => 'sometimes|array',
+            'roles.*' => 'exists:roles,id', 
+          
         ]);
         User::create($request->all());
         return response(
             redirect()->route('users.index')
                 ->with('success', 'User created successfully.')
         );
+        
     }
 
     /**
@@ -85,6 +89,8 @@ class UserController extends Controller
             'name'=> 'required',
             'email'=> 'required|email|unique:users,email',
             'password'=> 'required|min:6',
+            'roles' => 'sometimes|array',
+            'roles.*' => 'exists:roles,id',
         ]);
         $user->update($request->all());
         return response(
