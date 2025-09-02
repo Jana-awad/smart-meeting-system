@@ -28,8 +28,10 @@ Route::post('login', [AuthController::class, 'login']);
 | Protected Routes (Require JWT token)
 |--------------------------------------------------------------------------
 */
+
 Route::middleware(['auth:api'])->group(function () {
     Route::get('user', [AuthController::class, 'user']);
+    
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::apiResource('roles', RoleController::class);
