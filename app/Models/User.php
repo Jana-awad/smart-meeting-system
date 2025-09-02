@@ -102,4 +102,14 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    /**
+     * Check if the user is an admin.
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+         return $this->roles()->where('roename', 'admin')->exists();
+    }
 }
