@@ -22,6 +22,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -43,11 +44,11 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class, 'role_user')->withTimestamps()->withPivot('assigned_at');
-    }
-
+    //public function roles()
+    //{
+   //     return $this->belongsToMany(Role::class, 'role_user')->withTimestamps()->withPivot('assigned_at');
+   // }
+//
     public function createdRooms()
     {
         return $this->hasMany(Room::class, 'created_by');
@@ -108,8 +109,13 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return bool
      */
-    public function isAdmin(): bool
+     public function isAdmin(): bool
     {
-         return $this->roles()->where('roename', 'admin')->exists();
+        return $this->role === 'admin';
+    }
+
+    public function isEmployer(): bool
+    {
+        return $this->role === 'employer';
     }
 }
