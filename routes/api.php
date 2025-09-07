@@ -48,3 +48,25 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('meetings', MeetingController::class);
     Route::apiResource('users', UserController::class);
 });
+
+Route::middleware(['auth:api', 'role:admin'])->group(function () {
+    Route::get('/admin-only', fn() => response()->json(['message' => 'Welcome, admin']));
+});
+
+Route::middleware(['auth:api', 'role:employer'])->group(function () {
+    Route::get('/employer-only', fn() => response()->json(['message' => 'Welcome, employer']));
+});
+
+
+// login (returns { user, token })
+Route::post('/login', [AuthController::class, 'login']);
+
+
+// get current user from token
+Route::middleware('auth:api')->get('/user', [AuthController::class, 'user']);
+
+
+// admin-only route (server-side enforcement via role middleware)
+Route::middleware(['auth:api', 'role:admin'])->get('/admin-only', function() {
+return response()->json(['message' => 'Welcome, admin']);
+});
