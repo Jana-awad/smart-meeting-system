@@ -52,7 +52,7 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
 });
 
 Route::middleware(['auth:api', 'role:employer'])->group(function () {
-    Route::get('/employer-only', fn() => response()->json(['message' => 'Welcome, employer']));
+    Route::get('/employer-only', fn() => response()->json(['message' => 'Welcome, employee']));
 });
 
 
