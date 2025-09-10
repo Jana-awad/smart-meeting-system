@@ -8,10 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Room extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'location', 'created_by'];
-    public function creator(){
-        return $this->belongsTo(User::class, 'created_by');
-    }
+    protected $fillable = ['name', 'location','capacity'];
+ 
     public function features()
     {
         return $this->belongsToMany(Feature::class);

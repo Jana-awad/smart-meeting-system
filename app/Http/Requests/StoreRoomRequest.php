@@ -16,7 +16,9 @@ class StoreRoomRequest extends FormRequest
         return [
             'name' => 'required|string|unique:rooms,name',
             'location' => 'nullable|string',
-            'created_by' => 'required|exists:users,id',
+            'capacity'=>'required|integer',
+            'features' => 'required|array', // <-- Add this line to validate features
+            'features.*' => 'boolean',
         ];
     }
 }

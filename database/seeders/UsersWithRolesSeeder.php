@@ -20,10 +20,10 @@ class UsersWithRolesSeeder extends Seeder
 
         // Create an employer
         User::create([
-            'name' => 'Employer User',
+            'name' => 'Employee User',
             'email' => 'employer@example.com',
             'password' => Hash::make('password'),
-            'role' => 'employer',
+            'role' => 'employee',
         ]);
     }
 }
