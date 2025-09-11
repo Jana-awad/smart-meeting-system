@@ -8,6 +8,7 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $this->call(FetureSeeder::class);
+         $this->call([ UsersWithRolesSeeder::class,]);
+           $this->call([ FetureSeeder::class,]);
     }
 }
