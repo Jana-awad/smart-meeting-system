@@ -2,6 +2,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
+use App\Models\Meeting;
 
 class StoreMeetingRequest extends FormRequest
 {
@@ -21,5 +23,29 @@ class StoreMeetingRequest extends FormRequest
             'status'        => 'in:scheduled,cancelled,completed',
             'agenda'        => 'nullable|string',
         ];
+    }
+
+    // ✅ Prevent overlapping bookings
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function ($validator) {
+            $start = $this->booking_start;
+            $end = $this->booking_end;
+            $roomId = $this->room_id;
+
+            $overlap = Meeting::where('room_id', $roomId)
+                ->where(function ($query) use ($start, $end) {
+                    $query->whereBetween('booking_start', [$start, $end])
+                          ->orWhereBetween('booking_end', [$start, $end])
+                          ->orWhere(function ($q) use ($start, $end) {
+                              $q->where('booking_start', '<', $start)
+                                ->where('booking_end', '>', $end);
+                          });
+                })->exists();
+
+            if ($overlap) {
+                $validator->errors()->add('booking_start', 'This time slot is already booked for the selected room.');
+            }
+        });
     }
 }

@@ -17,8 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('location')->nullable();
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
-            
+            $table->integer('capacity')->default(0);
+            //nullable createdby for testing purposes
+$table->foreignId('created_by')->nullable()->constrained('users')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

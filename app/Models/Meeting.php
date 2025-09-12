@@ -31,10 +31,11 @@ class Meeting extends Model
     {
         return $this->hasMany(MinuteOfMeeting::class);
     }
-  
+
     public function attendees()
     {
         return $this->belongsToMany(User::class);
     }
+
 
 }
