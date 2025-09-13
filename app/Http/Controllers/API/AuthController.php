@@ -12,41 +12,35 @@ use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller
 {
     //
-    public function register(Request $request){
-        $validator=Validator::make($request->all(),[
-            'name'=>'required|string|max:255',
-            'email'=>'required|string|email|max:255|unique:users',
-            'password'=>'required|string|min:6|confirmed',
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
         ]);
-        if($validator->fails()){
-            return response()->json($validator->errors(),422);
-
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
         }
-        $user=User::create([
-            'name'=>$request->name,
-            'email'=>$request->email,
-            'password'=>Hash::make($request->password),
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
-        $token=JWTAuth::fromUser($user);
+        $token = JWTAuth::fromUser($user);
         return response()->json(compact('user', 'token'), 201);
     }
-    public function login (Request $request)
-{
-    $credentials = $request->only('email', 'password');
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
 
-<<<<<<< HEAD
-    if (!$token = JWTAuth::attempt($credentials)) {
-        return response()->json(['error' => 'Unauthorized'], 401);
+        if (!$token = JWTAuth::attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $user = JWTAuth::user();
+        return response()->json(compact('user', 'token'));
     }
-=======
- if (!$token = JWTAuth::attempt($credentials)) {
-  return response()->json(['error' => 'Unauthorized'], 401);
- }
->>>>>>> 9d63b08486ab226c823cb78da853e2c8b2226ebc
-
-    $user = JWTAuth::user();
-    return response()->json(compact('user', 'token'));
-}
     public function user(Request $request)
     {
         return response()->json($request->user());
@@ -58,15 +52,12 @@ class AuthController extends Controller
         return response()->json(['message' => 'Successfully logged out']);
     }
     public function index()
-{
-    if (auth()->user()->role !== 'admin') {
-        return response()->json(['error' => 'Forbidden'], 403);
+    {
+        if (auth()->user()->role !== 'admin') {
+            return response()->json(['error' => 'Forbidden'], 403);
+        }
+
+        $users = User::all();
+        return response()->json($users, 200);
     }
-
-    $users = User::all();
-    return response()->json($users, 200);
-}
-
-
-
 }
