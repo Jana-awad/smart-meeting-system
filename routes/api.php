@@ -26,7 +26,10 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 
+// Reset password: accepts token, email, password, password_confirmation
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 /*
 |--------------------------------------------------------------------------
 | Protected Routes (Require JWT token)
