@@ -10,11 +10,11 @@ use App\Models\Feature;
 
 class FeatureController extends Controller
 {
-public function index()
-{
-    $features = Feature::all(['id', 'name']);
-    return response()->json($features);
-}
+    public function index()
+    {
+        $features = Feature::latest()->paginate(10);
+        return FeatureResource::collection($features);
+    }
 
     public function store(StoreFeatureRequest $request)
     {

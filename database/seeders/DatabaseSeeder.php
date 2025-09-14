@@ -11,8 +11,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UsersWithRolesSeeder::class,
-            RoomsSeeder::class,
-            FetureSeeder::class
+            FetureSeeder::class,
+            RoomsSeeder::class
         ]);
     }
 }
