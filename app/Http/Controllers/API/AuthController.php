@@ -14,7 +14,6 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    //
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -33,10 +32,10 @@ class AuthController extends Controller
         $token = JWTAuth::fromUser($user);
         return response()->json(compact('user', 'token'), 201);
     }
+
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-
         if (!$token = JWTAuth::attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
@@ -44,6 +43,7 @@ class AuthController extends Controller
         $user = JWTAuth::user();
         return response()->json(compact('user', 'token'));
     }
+
     public function user(Request $request)
     {
         return response()->json($request->user());
@@ -54,6 +54,7 @@ class AuthController extends Controller
         JWTAuth::invalidate(JWTAuth::getToken());
         return response()->json(['message' => 'Successfully logged out']);
     }
+
     public function index()
     {
         if (auth()->user()->role !== 'admin') {

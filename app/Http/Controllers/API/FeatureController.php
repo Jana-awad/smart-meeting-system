@@ -38,4 +38,5 @@ class FeatureController extends Controller
         $feature->delete();
         return response()->json(['message' => 'Feature deleted successfully']);
     }
+
 }

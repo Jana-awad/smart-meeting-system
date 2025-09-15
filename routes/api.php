@@ -22,7 +22,7 @@ use App\Http\Controllers\API\RoleController;
 
 //Route::post('register', [AuthController::class, 'register']);
 //Route::post('login', [AuthController::class, 'login']);
-Route::get('/login', [AuthController::class, 'login'])->name('login');
+// Route::get('/login', [AuthController::class, 'login'])->name('login');
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
@@ -38,7 +38,7 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('user', [AuthController::class, 'user']);
-    
+
     Route::post('logout', [AuthController::class, 'logout']);
 
     Route::apiResource('roles', RoleController::class);
@@ -48,7 +48,13 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('attendees', AttendeeController::class);
     Route::apiResource('notifications', NotificationController::class);
     Route::apiResource('attachments', AttachmentController::class);
-    Route::apiResource('meetings', MeetingController::class);
+
+      // New routes for active meeting management
+    // Route::post('meetings/{id}/start', [MeetingController::class, 'startMeeting']);
+    // Route::post('meetings/{id}/end', [MeetingController::class, 'endMeeting']);
+    // Route::post('meetings/{id}/invite', [MeetingController::class, 'inviteAttendees']);//invite attendees to meeting
+    // Route::get('/meetings/upcoming', [MeetingController::class, 'getUpcomingMeeting']);
+ Route::apiResource('meetings', MeetingController::class);
     Route::apiResource('users', UserController::class);
 });
 

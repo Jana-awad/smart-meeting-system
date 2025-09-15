@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -25,7 +26,7 @@ class StoreMeetingRequest extends FormRequest
         ];
     }
 
-    // ✅ Prevent overlapping bookings
+    //  Prevent overlapping bookings
     public function withValidator(Validator $validator)
     {
         $validator->after(function ($validator) {
@@ -35,13 +36,11 @@ class StoreMeetingRequest extends FormRequest
 
             $overlap = Meeting::where('room_id', $roomId)
                 ->where(function ($query) use ($start, $end) {
-                    $query->whereBetween('booking_start', [$start, $end])
-                          ->orWhereBetween('booking_end', [$start, $end])
-                          ->orWhere(function ($q) use ($start, $end) {
-                              $q->where('booking_start', '<', $start)
-                                ->where('booking_end', '>', $end);
-                          });
-                })->exists();
+                    $query->where('booking_start', '<', $end)
+                        ->where('booking_end', '>', $start);
+                })
+                ->exists();
+
 
             if ($overlap) {
                 $validator->errors()->add('booking_start', 'This time slot is already booked for the selected room.');

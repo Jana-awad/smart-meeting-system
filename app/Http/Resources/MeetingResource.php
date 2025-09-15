@@ -19,6 +19,7 @@ class MeetingResource extends JsonResource
             'title'          => $this->title,
             'status'         => $this->status,
             'agenda'         => $this->agenda,
+            'attendees' => AttendeeResource::collection($this->whenLoaded('attendees')),//add attendees
             'created_at'     => $this->created_at,
         ];
     }
