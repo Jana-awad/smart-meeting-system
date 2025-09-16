@@ -14,8 +14,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::latest()->paginate(5);
-        return response(view('users.index', compact('users')));
+        $users = User::latest()->paginate(10);
+       // return response(view('users.index', compact('users')));
+       return UserResource::collection($users);
     }
 
     /**
@@ -92,15 +93,25 @@ class UserController extends Controller
         $request->validate([
             //'Id'=>['required','string'],
             'name'=> 'required',
-            'email'=> 'required|email|unique:users,email',
-            'password'=> 'required|min:6',
-              'role'=>'required|string',
+            'email'=> 'required|email|unique:users,email,' . $user->id,
+            'password'=> 'nullable|min:6',
+             'role'=>'required|string',
         ]);
-        $user->update($request->all());
-        return response(
-            redirect()->route('users.index')
-                ->with('success', 'User updated successfully.')
-        );
+        //$user->update($request->all());
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+        $user->save();
+
+       // return response(
+           // redirect()->route('users.index')
+               // ->with('success', 'User updated successfully.')
+        //);
+        return new UserResource($user);
     }
 
     /**
@@ -112,9 +123,10 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return response(
-            redirect()->route('users.index')
-                ->with('success', 'User  successfully.')
-        );
+       // return response(
+           // redirect()->route('users.index')
+               // ->with('success', 'User  successfully.')
+        //);
+        return response()->json(['message' => 'User deleted successfully.']);
     }
 }

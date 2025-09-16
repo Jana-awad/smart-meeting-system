@@ -24,6 +24,7 @@ use App\Http\Controllers\API\RoleController;
 //Route::post('login', [AuthController::class, 'login']);
 // Route::get('/login', [AuthController::class, 'login'])->name('login');
 
+
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
@@ -62,20 +63,24 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::get('/admin-only', fn() => response()->json(['message' => 'Welcome, admin']));
 });
 
-Route::middleware(['auth:api', 'role:employer'])->group(function () {
-    Route::get('/employer-only', fn() => response()->json(['message' => 'Welcome, employee']));
+Route::middleware(['auth:api', 'role:employee'])->group(function () {
+    Route::get('/employee-only', fn() => response()->json(['message' => 'Welcome, employee']));
 });
 
 
 // login (returns { user, token })
-Route::post('/login', [AuthController::class, 'login']);
+//Route::post('/login', [AuthController::class, 'login']);
 
 
 // get current user from token
-Route::middleware('auth:api')->get('/user', [AuthController::class, 'user']);
+//Route::middleware('auth:api')->get('/user', [AuthController::class, 'user']);
+
+
 
 
 // admin-only route (server-side enforcement via role middleware)
 Route::middleware(['auth:api', 'role:admin'])->get('/admin-only', function() {
 return response()->json(['message' => 'Welcome, admin']);
 });
+
+

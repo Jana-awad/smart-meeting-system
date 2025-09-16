@@ -46,7 +46,7 @@ class RoomResource extends JsonResource
             'meetings_count' => $this->meetings_count ?? 0,
             'available_capacity' => $this->available_capacity ?? $this->capacity,
             'available_slots' => $this->available_slots ?? [],
-            'created_by' => $this->created_by ?? null,
+            'features' => FeatureResource::collection($this->whenLoaded('features')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'features' => $this->whenLoaded('features', function () {

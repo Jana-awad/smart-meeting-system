@@ -13,11 +13,10 @@ class UserResource extends JsonResource
             'id'              => $this->id,
             'name'            => $this->name,
             'email'           => $this->email,
+            'role'            => $this->role,
             'email_verified'  => $this->email_verified_at ? true : false,
             'created_at'      => $this->created_at,
-            'password'       => $this->when($request->user() && $request->user()->isAdmin(), function () {
-                return $this->password; // Only return password if the user is an admin
-            }),
+        
         ];
     }
 }

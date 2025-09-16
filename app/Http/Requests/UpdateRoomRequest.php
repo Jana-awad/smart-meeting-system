@@ -16,7 +16,9 @@ class UpdateRoomRequest extends FormRequest
         return [
             'name' => 'required|string|unique:rooms,name,' . $this->room->id,
             'location' => 'nullable|string',
-            'created_by' => 'required|exists:users,id',
+            'capacity' => 'required|integer',
+            'features' => 'nullable|array',
+            
         ];
     }
 }
