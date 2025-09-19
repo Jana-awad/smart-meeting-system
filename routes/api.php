@@ -44,18 +44,19 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::apiResource('roles', RoleController::class);
     Route::apiResource('rooms', RoomController::class);
+    Route::get('rooms-list', [RoomController::class, 'list']);
     Route::apiResource('features', FeatureController::class);
     Route::apiResource('minutes', MinuteOfMeetingController::class);
     Route::apiResource('attendees', AttendeeController::class);
     Route::apiResource('notifications', NotificationController::class);
     Route::apiResource('attachments', AttachmentController::class);
 
-      // New routes for active meeting management
+    // New routes for active meeting management
     // Route::post('meetings/{id}/start', [MeetingController::class, 'startMeeting']);
     // Route::post('meetings/{id}/end', [MeetingController::class, 'endMeeting']);
     // Route::post('meetings/{id}/invite', [MeetingController::class, 'inviteAttendees']);//invite attendees to meeting
     // Route::get('/meetings/upcoming', [MeetingController::class, 'getUpcomingMeeting']);
- Route::apiResource('meetings', MeetingController::class);
+    Route::apiResource('meetings', MeetingController::class);
     Route::apiResource('users', UserController::class);
 });
 
@@ -79,8 +80,6 @@ Route::middleware(['auth:api', 'role:employee'])->group(function () {
 
 
 // admin-only route (server-side enforcement via role middleware)
-Route::middleware(['auth:api', 'role:admin'])->get('/admin-only', function() {
-return response()->json(['message' => 'Welcome, admin']);
+Route::middleware(['auth:api', 'role:admin'])->get('/admin-only', function () {
+    return response()->json(['message' => 'Welcome, admin']);
 });
-
-
