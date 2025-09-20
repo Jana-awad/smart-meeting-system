@@ -19,10 +19,10 @@ return new class extends Migration
             $table->foreignId('room_id')->constrained('rooms')->onDelete('cascade');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->foreignId('assigned_to')->constrained('users')->onDelete('cascade');
-            $table->text('content')->nullable(); 
+            $table->text('content')->nullable();
             $table->text('description')->nullable();
             $table->string('status')->default('draft');
-            $table->text('issues')->nullable(); 
+            $table->text('issues')->nullable();
             $table->date('deadline')->nullable();
             $table->timestamps();
         });

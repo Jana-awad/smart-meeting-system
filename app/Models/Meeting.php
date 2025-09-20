@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Meeting extends Model
 {
     use HasFactory;
-      protected $fillable = [
+    protected $fillable = [
         'room_id',
         'organized_by',
         'booking_start',
@@ -18,10 +18,9 @@ class Meeting extends Model
         'agenda',
     ];
     public function organizer()
-{
-    return $this->belongsTo(User::class, 'organized_by');
-
-}
+    {
+        return $this->belongsTo(User::class, 'organized_by');
+    }
     public function room()
     {
         return $this->belongsTo(Room::class);
@@ -32,10 +31,14 @@ class Meeting extends Model
         return $this->hasMany(MinuteOfMeeting::class);
     }
 
+    // public function attendees()
+    // {
+    //     return $this->belongsToMany(User::class);
+    // }
+
     public function attendees()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'attendees', 'meeting_id', 'user_id')
+            ->withTimestamps();
     }
-
-
 }
