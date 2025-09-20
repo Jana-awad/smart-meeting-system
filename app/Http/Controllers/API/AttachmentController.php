@@ -7,6 +7,7 @@ use App\Models\Attachment;
 use App\Http\Requests\StoreAttachmentRequest;
 use App\Http\Requests\UpdateAttachmentRequest;
 use App\Http\Resources\AttachmentResource;
+use Illuminate\Http\Request;
 
 class AttachmentController extends Controller
 {
@@ -17,11 +18,33 @@ class AttachmentController extends Controller
         );
     }
 
-    public function store(StoreAttachmentRequest $request)
-    {
-        $attachment = Attachment::create($request->validated());
-        return new AttachmentResource($attachment->load(['uploader', 'minuteOfMeeting']));
-    }
+    // public function store(StoreAttachmentRequest $request)
+    // {
+    //     $attachment = Attachment::create($request->validated());
+    //     return new AttachmentResource($attachment->load(['uploader', 'minuteOfMeeting']));
+    // }
+    public function store(Request $request)
+{
+    $request->validate([
+        'file' => 'required|file|max:51200', // max 50MB for example
+        'minute_id' => 'nullable|exists:minute_of_meetings,id',
+        'meeting_id' => 'nullable|exists:meetings,id',
+    ]);
+
+    $file = $request->file('file');
+    $path = $file->store('attachments', 'public'); // adjust driver
+    $attachment = \App\Models\Attachment::create([
+        'meeting_id' => $request->input('meeting_id'),
+        'minute_id' => $request->input('minute_id'),
+        'uploaded_by' => auth()->id(),
+        'filename' => $file->getClientOriginalName(),
+        'path' => $path,
+        'mime' => $file->getClientMimeType(),
+        'size' => $file->getSize()
+    ]);
+
+    return response()->json($attachment, 201);
+}
 
     public function show($id)
     {

@@ -51,14 +51,19 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('notifications', NotificationController::class);
     Route::apiResource('attachments', AttachmentController::class);
 
-    // New routes for active meeting management
-    // Route::post('meetings/{id}/start', [MeetingController::class, 'startMeeting']);
-    // Route::post('meetings/{id}/end', [MeetingController::class, 'endMeeting']);
-    // Route::post('meetings/{id}/invite', [MeetingController::class, 'inviteAttendees']);//invite attendees to meeting
-    // Route::get('/meetings/upcoming', [MeetingController::class, 'getUpcomingMeeting']);
+    //New routes for active meeting management
+    Route::post('meetings/{id}/start', [MeetingController::class, 'startMeeting']);
+    Route::post('meetings/{id}/end', [MeetingController::class, 'endMeeting']);
+    Route::post('meetings/{id}/invite', [MeetingController::class, 'inviteAttendees']); //invite attendees to meeting
+    Route::get('meetings/upcoming', [MeetingController::class, 'getUpcomingMeeting']);
     Route::apiResource('meetings', MeetingController::class);
+    Route::get('meetings/{id}/minutes', [MinuteOfMeetingController::class, 'getByMeeting']);
+    Route::get('meetings/{id}/attachments', [AttachmentController::class, 'getByMeeting']);
+    Route::get('meetings/{id}/attendees', [AttendeeController::class, 'getByMeeting']);
+    Route::post('meetings/{id}/attendees', [AttendeeController::class, 'addAttendees']);
     Route::apiResource('users', UserController::class);
 });
+
 
 Route::middleware(['auth:api', 'role:admin'])->group(function () {
     Route::get('/admin-only', fn() => response()->json(['message' => 'Welcome, admin']));

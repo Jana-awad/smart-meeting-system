@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('rooms', function (Blueprint $table) {
-            $table->integer('capacity')->default(0)->after('location');
-        });
+        // Schema::table('rooms', function (Blueprint $table) {
+        //     $table->integer('capacity')->default(0)->after('location');
+        // });
     }
 
     /**

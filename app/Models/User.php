@@ -126,7 +126,7 @@ class User extends Authenticatable implements JWTSubject
 public function sendPasswordResetNotification($token)
 {
     // FRONTEND_URL is a new env var (see .env instructions below)
-    $frontend = config('app.frontend_url', env('FRONTEND_URL', 'http://127.0.0.1:5500')); 
+    $frontend = config('app.frontend_url', env('FRONTEND_URL', 'http://127.0.0.1:5500'));
     $url = rtrim($frontend, '/') . '/reset-password.html?token=' . $token . '&email=' . urlencode($this->email);
 
     // Use a custom notification class (see next file)

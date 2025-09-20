@@ -11,13 +11,8 @@ class MinuteOfMeeting extends Model
     protected $fillable = [
         'meeting_id',
         'room_id',
-        'created_by',
-        'assigned_to',
         'content',
-        'description',
-        'status',
-        'issues',
-        'deadline',
+        'created_by',
     ];
 
     public function meeting()
@@ -28,16 +23,12 @@ class MinuteOfMeeting extends Model
     {
         return $this->belongsTo(Room::class);
     }
-    public function creator()
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-    public function assignee()
-    {
-        return $this->belongsTo(User::class, 'assigned_to');            
-}
     public function attachments()
     {
         return $this->hasMany(Attachment::class);
+    }
+    public function actionItems()
+    {
+        return $this->hasMany(ActionItem::class, 'minutes_id');
     }
 }
